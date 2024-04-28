@@ -5,8 +5,12 @@
 const mongoose = require("mongoose");
 const express = require("express");
 const productRoute = require("./routes/product.route.js");
-const Product = require("./models/product.model.js")
+const envVar = require('dotenv');
 const app = express();
+
+// get connection string from .env
+envVar.config();
+const connection = process.env.DATABASE_CONNECTION;
 
 // middleware that allows for the use of JSON in http requests
 app.use(express.json());
@@ -19,7 +23,7 @@ app.get("/", (req, res) => {
 });
 
 // connection string found in DB
-mongoose.connect("mongodb+srv://krisandraadams:lCf1LbieyDJ205VG@simplecrudbackenddb.rhs0ey4.mongodb.net/Node-API?retryWrites=true&w=majority&appName=simpleCRUDBackendDB")
+mongoose.connect(connection)
   .then(() => {
     console.log("Connected!");
     app.listen(8080, () => {
